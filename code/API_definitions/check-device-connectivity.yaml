@@ -79,27 +79,27 @@ paths:
           $ref: "#/components/responses/Generic500"
         '503':
           $ref: "#/components/responses/Generic503"
-   /connectionStatus:
+   /connectivity-status:
     post:
       tags:
         - Check Device Connection
-      summary: 'Check if the device currently is connected to the network'
-      operationId: checkConnectionStatus
+      summary: 'Check if the device is currently connected to the network'
+      operationId: checkConnectivityStatus
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/RequestConnectionStatus'
+              $ref: '#/components/schemas/RequestConnectivityStatus'
         required: true
       responses:
         '200':
-          description: Contains information about currently connection status to the network
+          description: Contains information about the connection status to the network
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/NetworkConnectionEventReport'
+                $ref: '#/components/schemas/NetworkConnectivityEventReport'
               examples:
-                No-Country-Code:
+                Multiple-Devices:
                   value:
                     - ueId:
                         ipv6Addr: 2001:db8:85a3:8d3:1319:8a2e:370:7344
@@ -155,7 +155,7 @@ components:
           $ref: '#/components/schemas/CountryCode'
         countryName:
           $ref: '#/components/schemas/CountryName'
-    NetworkConnectionEventReport:
+    NetworkConnectivityEventReport:
       type: "object"
       properties:
         ueId:
@@ -163,7 +163,7 @@ components:
         uePort:
           $ref: '#/components/schemas/Port'
         eventType:
-          $ref: "#/components/schemas/NetworkConnectionEventType"
+          $ref: "#/components/schemas/NetworkConnectivityEventType"
       required:
         - ueId
         - eventType      
@@ -224,10 +224,9 @@ components:
       type: array
       items:
         type: string
-    NetworkConnectionEventType:
-      type: string
-      enum:
-        - IS_CONNECTED
+    NetworkConnectivityEventType:
+      description: Checking event type of network connectivity
+      type: boolean
     RequestRoamingStatus:
       type: object
       properties:
@@ -237,16 +236,13 @@ components:
           $ref: '#/components/schemas/Port'
       required:
         - ueId
-    RequestConnectionStatus:
+    RequestConnectivityStatus:
       type: object
       properties:
         ueId:
           $ref: '#/components/schemas/UeId'
-        eventType:
-          $ref: '#/components/schemas/NetworkConnectionEventType'
       required:
         - ueId
-        - eventType
     Port:
       description: User equipment port. Device port may be required along with IP address to identify the target device
       type: integer
