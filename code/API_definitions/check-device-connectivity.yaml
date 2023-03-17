@@ -156,17 +156,24 @@ components:
         countryName:
           $ref: '#/components/schemas/CountryName'
     NetworkConnectivityEventReport:
+      description: report of network connectivity
+      type: "object"
+      properties:
+        devices:
+          $ref: "#/components/schemas/Device"
+      required:
+        - devices
+    Device:
+      description: Device with ueId and isConnected field which can check if the device is connected or not
       type: "object"
       properties:
         ueId:
           $ref: "#/components/schemas/UeId"
-        uePort:
-          $ref: '#/components/schemas/Port'
-        eventType:
-          $ref: "#/components/schemas/NetworkConnectivityEventType"
-      required:
-        - ueId
-        - eventType      
+        isConnected:
+          $ref: "#/components/schemas/IsConnected"         
+    IsConnected:
+      description: Checking if device is connected or not
+      type: boolean
     ActiveRoaming:
       description: Roaming status. True, if it is roaming
       type: boolean
