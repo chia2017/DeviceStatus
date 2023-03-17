@@ -103,10 +103,10 @@ paths:
                   value:
                     - ueId:
                         ipv6Addr: 2001:db8:85a3:8d3:1319:8a2e:370:7344
-                      isConnected: true
+                      connected: true
                     - ueId:
                         msisdn: '123456789'
-                      isConnected: false
+                      connected: false
         '400':
           $ref: "#/components/responses/Generic400"
         '401':
@@ -156,22 +156,22 @@ components:
         countryName:
           $ref: '#/components/schemas/CountryName'
     NetworkConnectivityEventReport:
-      description: report of network connectivity
-      type: "object"
-      properties:
-        devices:
-          $ref: "#/components/schemas/Device"
-      required:
-        - devices
-    Device:
-      description: Device with ueId and isConnected field which can check if the device is connected or not
+      description: Connectivity response of device
       type: "object"
       properties:
         ueId:
           $ref: "#/components/schemas/UeId"
-        isConnected:
-          $ref: "#/components/schemas/IsConnected"         
-    IsConnected:
+        connected:
+          $ref: "#/components/schemas/Connected"
+      required:
+        - ueId
+        - connected
+    NetworkConnectivityEventReportList:
+      description: List of connectivity response of devices
+      type: "array"
+      items:
+        $ref: "#/components/schemas/NetworkConnectivityEventReport"
+    Connected:
       description: Checking if device is connected or not
       type: boolean
     ActiveRoaming:
