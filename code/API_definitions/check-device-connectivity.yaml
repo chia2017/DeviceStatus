@@ -97,7 +97,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/NetworkConnectivityEventReport'
+                $ref: '#/components/schemas/NetworkConnectivityEventReportList'
               examples:
                 Multiple-Devices:
                   value:
@@ -167,16 +167,21 @@ components:
         - ueId
         - connected
     NetworkConnectivityEventReportList:
-      description: List of connectivity response of devices
+      description: List of connectivity-responses of devices
       type: "array"
       items:
         $ref: "#/components/schemas/NetworkConnectivityEventReport"
     Connected:
-      description: Checking if device is connected or not
+      description: Checking if the device is connected or not
       type: boolean
     ActiveRoaming:
       description: Roaming status. True, if it is roaming
       type: boolean
+    UeIds:
+      description: List of user equipment identifier
+      type: array
+      items: 
+        $ref: "#/components/schemas/UeId"
     UeId:
       description: User equipment identifier
       type: object
@@ -231,9 +236,6 @@ components:
       type: array
       items:
         type: string
-    NetworkConnectivityEventType:
-      description: Checking event type of network connectivity
-      type: boolean
     RequestRoamingStatus:
       type: object
       properties:
@@ -244,10 +246,11 @@ components:
       required:
         - ueId
     RequestConnectivityStatus:
+      description: It determine status of the request connectivity
       type: object
       properties:
         ueId:
-          $ref: '#/components/schemas/UeId'
+          $ref: '#/components/schemas/UeIds'
       required:
         - ueId
     Port:
