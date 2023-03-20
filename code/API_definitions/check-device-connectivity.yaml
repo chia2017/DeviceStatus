@@ -79,6 +79,46 @@ paths:
           $ref: "#/components/responses/Generic500"
         '503':
           $ref: "#/components/responses/Generic503"
+   /connectivity-status:
+    post:
+      tags:
+        - Check Device Connection
+      summary: 'Check if the device is currently connected to the network'
+      operationId: checkConnectivityStatus
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestConnectivityStatus'
+        required: true
+      responses:
+        '200':
+          description: Contains information about the connection status to the network
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NetworkConnectivityEventReportList'
+              examples:
+                Multiple-Devices:
+                  value:
+                    - ueId:
+                        ipv6Addr: 2001:db8:85a3:8d3:1319:8a2e:370:7344
+                      connected: true
+                    - ueId:
+                        msisdn: '123456789'
+                      connected: false
+        '400':
+          $ref: "#/components/responses/Generic400"
+        '401':
+          $ref: "#/components/responses/Generic401"
+        '403':
+          $ref: "#/components/responses/Generic503"
+        '404':
+          $ref: "#/components/responses/Generic404"
+        '500':
+          $ref: "#/components/responses/Generic500"
+        '503':
+          $ref: "#/components/responses/Generic503"          
 components:
   securitySchemes:
     oAuth2ClientCredentials:
@@ -115,9 +155,33 @@ components:
           $ref: '#/components/schemas/CountryCode'
         countryName:
           $ref: '#/components/schemas/CountryName'
+    NetworkConnectivityEventReport:
+      description: Connectivity response of device
+      type: "object"
+      properties:
+        ueId:
+          $ref: "#/components/schemas/UeId"
+        connected:
+          $ref: "#/components/schemas/Connected"
+      required:
+        - ueId
+        - connected
+    NetworkConnectivityEventReportList:
+      description: List of connectivity-responses of devices
+      type: "array"
+      items:
+        $ref: "#/components/schemas/NetworkConnectivityEventReport"
+    Connected:
+      description: Checking if the device is connected or not
+      type: boolean
     ActiveRoaming:
       description: Roaming status. True, if it is roaming
       type: boolean
+    UeIds:
+      description: List of user equipment identifier
+      type: array
+      items: 
+        $ref: "#/components/schemas/UeId"
     UeId:
       description: User equipment identifier
       type: object
@@ -179,6 +243,14 @@ components:
           $ref: '#/components/schemas/UeId'
         uePort:
           $ref: '#/components/schemas/Port'
+      required:
+        - ueId
+    RequestConnectivityStatus:
+      description: It determine status of the request connectivity
+      type: object
+      properties:
+        ueId:
+          $ref: '#/components/schemas/UeIds'
       required:
         - ueId
     Port:
